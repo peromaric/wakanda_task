@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  wakanda_blockchain_cont:
+    container_name: wakanda_blockchain_cont
+    image: wakanda_blockchain_cont:latest
+    build:
+      context: .
+      dockerfile: Dockerfile_wakanda_blockchain
+    network_mode: host

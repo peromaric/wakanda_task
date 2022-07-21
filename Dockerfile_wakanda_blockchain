@@ -1,0 +1,10 @@
+FROM node:18
+
+COPY ./wakanda_blockchain /app/wakanda_blockchain
+
+WORKDIR /app/wakanda_blockchain
+
+RUN npm install --save-dev
+RUN npx hardhat compile
+
+CMD ["npx", "hardhat", "node"]
