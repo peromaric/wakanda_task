@@ -8,20 +8,19 @@ const hre = require("hardhat");
 
 async function main() {
   let wallet = new hre.ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
-  
+
   const WakandaERC20 = await hre.ethers.getContractFactory("WakandaERC20");
   const WakandaVotingContract = await hre.ethers.getContractFactory("WakandaVotingContract");
   
-  const wakandaERC20 = await WakandaERC20.deploy();
+  const wakandaERC20 = await WakandaERC20.deploy(wallet.address);
   await wakandaERC20.deployed();
 
-  const wakandaVotingContract = await WakandaVotingContract.deploy(wakandaERC20.address);
+  const wakandaVotingContract = await WakandaVotingContract.deploy(wakandaERC20.address, wallet.address);
   await wakandaVotingContract.deployed()
   
-  console.log("WakandaERC20 with 1000 ETH deployed to:", wakandaERC20.address);
-  
-  console.log("Wallet: ", wallet.address);
-
+  console.log("WakandaERC20 token contract deployed to", wakandaERC20.address);
+  console.log("Wakanda voting contract deployed to: ", wakandaVotingContract.address);
+  console.log("Owner wallet: ", wallet.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

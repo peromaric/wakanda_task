@@ -12,8 +12,8 @@ contract WakandaERC20 is ERC20 {
     
     address owner;
 
-    constructor() ERC20("Wakanda", "WKND") {
-        owner = msg.sender;
+    constructor(address _owner) ERC20("Wakanda", "WKND") {
+        owner = _owner;
         _mint(owner, 100000000);
     }
     

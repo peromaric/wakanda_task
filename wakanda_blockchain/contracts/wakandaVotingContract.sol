@@ -14,9 +14,9 @@ contract WakandaVotingContract {
     address private owner;
     address[] private candidateList;
 
-    constructor(IERC20 _token) {
+    constructor(IERC20 _token, address _owner) {
         token = _token;
-        owner = msg.sender;
+        owner = _owner;
     }
 
     function balanceOf(address account) public view returns (uint256) { 
