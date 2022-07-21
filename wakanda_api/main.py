@@ -2,7 +2,7 @@ from wakanda_api.wakanda_api import WakandaAPI
 
 
 def main():
-    turtle_engine: WakandaAPI = WakandaAPI()
+    wakanda_api: WakandaAPI = WakandaAPI()
 
 
 if __name__ == "__main__":
