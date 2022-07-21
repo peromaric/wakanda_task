@@ -18,9 +18,8 @@ async function main() {
   const wakandaVotingContract = await WakandaVotingContract.deploy(wakandaERC20.address, wallet.address);
   await wakandaVotingContract.deployed()
   
-  console.log("WakandaERC20 token contract deployed to", wakandaERC20.address);
-  console.log("Wakanda voting contract deployed to: ", wakandaVotingContract.address);
-  console.log("Owner wallet: ", wallet.address);
+  console.log("TOKEN_CONTRACT:", wakandaERC20.address);
+  console.log("VOTING_CONTRACT:", wakandaVotingContract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

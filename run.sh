@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker-compose -f docker-compose.yml up -d --build
+#docker-compose -f docker-compose.yml up -d --build
 
-docker exec -it wakanda_blockchain_cont npx hardhat run --network localhost scripts/deploy.js
+docker exec -it wakanda_blockchain_cont npx hardhat run --network localhost scripts/deploy.js > ./wakanda_api/.ENV
 
 
