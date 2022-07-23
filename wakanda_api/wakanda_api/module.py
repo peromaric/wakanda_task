@@ -5,5 +5,5 @@
 class Module:
     def __init__(self, wakanda_api):
         from wakanda_api.wakanda_api import WakandaAPI
-        self.turtle_engine: WakandaAPI = wakanda_api
+        self.wakanda_api: WakandaAPI = wakanda_api
 

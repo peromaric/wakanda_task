@@ -1,17 +1,20 @@
 from fastapi import FastAPI
+from wakanda_api.router import router as api_router
 import wakanda_api.router
-from wakanda_api.router import router
 import uvicorn
+from wakanda_api.web3_interactor import Web3Interactor
 from fastapi.middleware.cors import CORSMiddleware
 
 
-class WakandaAPI:
+class WakandaAPI():
     def __init__(self):
+        self.web3_interactor = Web3Interactor(self)
         self.api: FastAPI = FastAPI(
             title="WakandaVotingAPI",
             description="Votes and stuff"
         )
-        self.api.include_router(router)
+        wakanda_api.router.web3_interactor = self.web3_interactor
+        self.api.include_router(api_router)
         self.api.add_middleware(
             CORSMiddleware,
             allow_origins=["http://localhost:3000"], #allow frontend to connect
