@@ -12,15 +12,20 @@ contract WakandaERC20 is ERC20 {
     
     address owner;
 
-    constructor(address _owner) ERC20("Wakanda", "WKND") {
-        owner = _owner;
-        _mint(owner, 100000000);
+    constructor() ERC20("Wakanda", "WKND") {
+        owner = msg.sender;
+        _mint(address(this), 1000000);
     }
     
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override {
         super._beforeTokenTransfer(from, to, amount);
 
-        require(msg.sender == owner, "ERC20WithSafeTransfer: invalid recipient");
+        require(msg.sender == owner, "Only the owner can transfer tokens.");
     }
 
+    function changeOwner(address _new_owner) public payable {
+        require(msg.sender == owner, "Only the owner can change the owner's address");
+
+        owner = _new_owner;
+    }
 }

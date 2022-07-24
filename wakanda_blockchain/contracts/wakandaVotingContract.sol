@@ -14,26 +14,26 @@ contract WakandaVotingContract {
     address private owner;
     address[] private candidateList;
 
-    constructor(IERC20 _token, address _owner) {
+    constructor(IERC20 _token) {
         token = _token;
-        owner = _owner;
+        owner = msg.sender;
     }
 
     function balanceOf(address account) public view returns (uint256) { 
         return token.balanceOf(account);
     }
 
-    function vote(address _candidateAddress) public {
-        require(balanceOf(msg.sender) > 1 && checkIfCandidateExists(_candidateAddress), "You're out of touch, I'm out of mind.");
-        token.transferFrom(owner, _candidateAddress, 1);
+    function vote(address _candidate) public {
+        require(balanceOf(msg.sender) > 1 && checkIfCandidateExists(_candidate), "You're out of touch, I'm out of mind.");
+        token.transfer(_candidate, 1);
     }
 
-    function registerVoter(address _voterAddress) public {
-        token.transferFrom(owner, _voterAddress, 1);
+    function registerVoter(address _voter) public {
+        token.transfer(_voter, 1);
     }
 
     function addCandidate(address _candidate) public {
-        require(msg.sender == owner, "You can't add candidates unless you're the owner of the contract!");
+        require((msg.sender == owner) && !checkIfCandidateExists(_candidate), "You can't add candidates unless you're the owner of the contract!");
         candidateList.push(_candidate);
     }
 

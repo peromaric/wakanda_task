@@ -38,5 +38,5 @@ class Balance(BaseModel):
     summary="Returns contract balance"
 )
 async def get_balance_of():
-    return Balance(x=random.randint(0, 11), y=random.randint(0, 11))
+    return await web3_interactor.balance_of("0x5FbDB2315678afecb367f032d93F642f64180aa3")
 

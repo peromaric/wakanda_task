@@ -6,7 +6,7 @@ from wakanda_api.web3_interactor import Web3Interactor
 from fastapi.middleware.cors import CORSMiddleware
 
 
-class WakandaAPI():
+class WakandaAPI:
     def __init__(self):
         self.web3_interactor = Web3Interactor(self)
         self.api: FastAPI = FastAPI(

@@ -12,14 +12,16 @@ async function main() {
   const WakandaERC20 = await hre.ethers.getContractFactory("WakandaERC20");
   const WakandaVotingContract = await hre.ethers.getContractFactory("WakandaVotingContract");
   
-  const wakandaERC20 = await WakandaERC20.deploy(wallet.address);
+  const wakandaERC20 = await WakandaERC20.deploy();
   await wakandaERC20.deployed();
 
-  const wakandaVotingContract = await WakandaVotingContract.deploy(wakandaERC20.address, wallet.address);
+  const wakandaVotingContract = await WakandaVotingContract.deploy(wakandaERC20.address);
   await wakandaVotingContract.deployed()
+
+  wakandaERC20.changeOwner(wakandaVotingContract.address)
   
-  console.log("TOKEN_CONTRACT:", wakandaERC20.address);
-  console.log("VOTING_CONTRACT:", wakandaVotingContract.address);
+  let output = `{"tokenContract": "${wakandaERC20.address}", "votingContract": "${wakandaVotingContract.address}"}`
+  console.log(output);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
