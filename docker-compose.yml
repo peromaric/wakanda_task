@@ -8,3 +8,11 @@ services:
       context: .
       dockerfile: Dockerfile_wakanda_blockchain
     network_mode: host
+  
+  wakanda_api_cont:
+    container_name: wakanda_api_cont
+    image: wakanda_api_cont:latest
+    build:
+      context: .
+      dockerfile: Dockerfile_wakanda_api
+    network_mode: host
