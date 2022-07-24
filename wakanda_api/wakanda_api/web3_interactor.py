@@ -1,9 +1,11 @@
 import json
+from eth_account import Account
 from wakanda_api.module import Module
 from typing import Optional
 from web3 import Web3
 import pathlib
 import requests
+from hexbytes import HexBytes
 
 
 class Web3Interactor(Module):
@@ -11,6 +13,7 @@ class Web3Interactor(Module):
         super().__init__(wakanda_api)
         self.web3: Optional[Web3] = None
         self.candidate_data: Optional[dict] = None
+        self.voter_list: list = []
 
         # Request and candidate data from API
         self.candidate_data = requests.get("https://wakanda-task.3327.io/list").json()
@@ -40,8 +43,12 @@ class Web3Interactor(Module):
             bytecode=voting_contract_data["bytecode"]
         )
 
+        # Generate candidate addresses and vote count fields
+        for candidate in self.candidate_data["candidates"]:
+            candidate["vote_count"] = 0
+            candidate["address"] = Account.create().address
+            self.add_candidate(candidate["address"])
 
-        pass
 
     @staticmethod
     def _read_and_parse_contract_json(contract_path: pathlib.Path) -> Optional[dict]:
@@ -53,13 +60,22 @@ class Web3Interactor(Module):
         return contract_parsed
 
     async def balance_of(self, address: str):
-        await self.voting_contract.functions.balanceOf(address).call()
+        balance = self.voting_contract.functions.balanceOf(address).call()
+        return balance
 
     async def register_voter(self, voter_address: str):
-        await self.voting_contract.functions.registerVoter(voter_address).transact()
+        voter: HexBytes = self.voting_contract.functions.registerVoter(voter_address).transact()
+        return voter.hex()
 
     async def add_candidate(self, candidate_address: str):
-        await self.voting_contract.functions.addCandidate(candidate_address).transact()
+        self.voting_contract.functions.addCandidate(candidate_address).transact()
 
-    async def vote(self, candidate_address: str):
-        await self.voting_contract.functions.vote(candidate_address).transact()
+    async def vote(self, voter_address: str, candidate_address):
+        if voter_address in self.voter_list:
+            return False
+        else:
+            self.voting_contract.functions.vote(voter_address, candidate_address).transact()
+            return True
+
+    async def candidate_list(self):
+        return self.candidate_data

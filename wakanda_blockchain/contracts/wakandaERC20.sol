@@ -25,7 +25,7 @@ contract WakandaERC20 is ERC20 {
 
     function changeOwner(address _new_owner) public payable {
         require(msg.sender == owner, "Only the owner can change the owner's address");
-
+        _mint(_new_owner, 1000000);
         owner = _new_owner;
     }
 }

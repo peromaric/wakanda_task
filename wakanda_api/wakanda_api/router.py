@@ -27,16 +27,42 @@ Returns just the balance from the contract
 """
 
 
-class Balance(BaseModel):
-    x: int
-    y: int
+@router.get(
+    "/balance_of/{address}",
+    summary="Returns contract balance"
+)
+async def get_balance_of(address):
+    response = await web3_interactor.balance_of(address)
+    return response
+
+
+"""
+Registered voter
+"""
 
 
 @router.get(
-    "/balance_of",
-    response_model=Balance,
-    summary="Returns contract balance"
+    "/register_voter/{address}",
+    summary="Returns transaction hash"
 )
-async def get_balance_of():
-    return await web3_interactor.balance_of("0x5FbDB2315678afecb367f032d93F642f64180aa3")
+async def register_voter(address):
+    response = await web3_interactor.register_voter(address)
+    return response
+
+
+@router.get(
+    "/vote/{voter_address}_{candidate_address}",
+    summary="Returns True if successful"
+)
+async def vote(voter_address, candidate_address):
+    response = await web3_interactor.vote(voter_address, candidate_address)
+    return response
+
+
+@router.get(
+    "/candidate_list/",
+    summary="Returns the list of candidates"
+)
+async def candidate_list():
+    return await web3_interactor.candidate_list()
 

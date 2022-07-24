@@ -23,16 +23,18 @@ contract WakandaVotingContract {
         return token.balanceOf(account);
     }
 
-    function vote(address _candidate) public {
-        require(balanceOf(msg.sender) > 1 && checkIfCandidateExists(_candidate), "You're out of touch, I'm out of mind.");
+    function vote(address _voter, address _candidate) public payable {
+        require(balanceOf(_voter) > 0 && checkIfCandidateExists(_candidate), "You're out of touch, I'm out of mind.");
         token.transfer(_candidate, 1);
     }
 
-    function registerVoter(address _voter) public {
+    // add a rule to prevent the user from registering the candidate for free votes
+    function registerVoter(address _voter) public payable {
+        require(msg.sender == owner, "Only the contract owner can register the voter!");
         token.transfer(_voter, 1);
     }
 
-    function addCandidate(address _candidate) public {
+    function addCandidate(address _candidate) public payable {
         require((msg.sender == owner) && !checkIfCandidateExists(_candidate), "You can't add candidates unless you're the owner of the contract!");
         candidateList.push(_candidate);
     }
