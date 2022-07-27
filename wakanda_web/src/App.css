@@ -1,0 +1,140 @@
+* {
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+a {
+  color: white;
+}
+
+.App {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  overflow-x: hidden;
+  background-color: #282c34;
+  color: white;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+
+  width: 80%;
+  margin: auto;
+}
+
+p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#address {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  margin: 10px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+input[type='text'] {
+  height: 30px;
+  width: 400px;
+  margin-bottom: 10px;
+}
+
+.candidates {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  width: 120px;
+}
+.candidate {
+  /* border-radius: 10px;
+  border: transparent; */
+}
+
+#btnGoToVoting {
+  display: block;
+  margin: auto;
+  width: 200px;
+}
+
+#vote {
+  background-color: #7289da;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: #7289da;
+}
+
+.selected {
+  background-color: green;
+}
+
+.notSelected {
+  background-color: white;
+}
+
+#error {
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#positiveMessage {
+  color: green;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* #numberOfTokens {
+  position: absolute;
+  right: 10px;
+  margin-top: 0.67em;
+  top: 0px;
+} */
+.vote {
+  margin-top: 20px;
+}
+
+#candidatesTable {
+  width: 70%;
+  margin: auto;
+}

@@ -16,3 +16,12 @@ services:
       context: .
       dockerfile: Dockerfile_wakanda_api
     network_mode: host
+ 
+  wakanda_web_cont:
+    container_name: wakanda_web_cont
+    image: wakanda_web_cont:latest
+    build:
+      context: .
+      dockerfile: Dockerfile_wakanda_web
+    network_mode: host
+
