@@ -6,6 +6,7 @@ from web3 import Web3
 import pathlib
 import requests
 from hexbytes import HexBytes
+import time
 
 
 class Web3Interactor(Module):
@@ -23,9 +24,14 @@ class Web3Interactor(Module):
         path_to_voting_contract: pathlib.Path = pathlib.Path("./wakanda_api/contract_data/WakandaVotingContract.json")
         path_to_deployed_contract_addresses: pathlib.Path = pathlib.Path("./wakanda_api/contract_data/addresses.json")
 
-        token_contract_data: dict = self._read_and_parse_contract_json(path_to_token_contract)
-        voting_contract_data: dict = self._read_and_parse_contract_json(path_to_voting_contract)
-        deployed_contract_data: dict = self._read_and_parse_contract_json(path_to_deployed_contract_addresses)
+        for attempt in range(30):
+            try:
+                token_contract_data: dict = self._read_and_parse_contract_json(path_to_token_contract)
+                voting_contract_data: dict = self._read_and_parse_contract_json(path_to_voting_contract)
+                deployed_contract_data: dict = self._read_and_parse_contract_json(path_to_deployed_contract_addresses)
+            except IOError:
+                print("Contract data still missing, reattempting to read from contracts.")
+                time.sleep(10)
 
         # Fill provider and other web3 data
         self.w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
