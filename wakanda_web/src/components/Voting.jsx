@@ -84,7 +84,7 @@ const Voting = () => {
     const selectedCandidates = getSelectedCandidates();
     selectedCandidates.forEach(async (c) => {
       let response = await fetch(
-        `http://localhost:8888/candidate_list/`,
+        `http://localhost:8888/vote/${address}_${c.address}`,
         {
           method: 'GET',
         }
@@ -132,7 +132,7 @@ const Voting = () => {
         })}
       </div>
       <p>Select at least one candidate and press Vote</p>
-      <h2>Top 3 candidates</h2>
+      <h2>Candidates ranking</h2>
       <CandidatesTable candidates={candidates}></CandidatesTable>
       <button className="button vote" onClick={vote}>
         Vote

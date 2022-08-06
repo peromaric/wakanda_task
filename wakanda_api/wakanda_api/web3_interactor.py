@@ -6,6 +6,7 @@ from web3 import Web3
 import pathlib
 import requests
 from hexbytes import HexBytes
+import asyncio
 import time
 
 
@@ -52,9 +53,9 @@ class Web3Interactor(Module):
         # Generate candidate addresses and vote count fields
         for candidate in self.candidate_data["candidates"]:
             candidate["vote_count"] = 0
+            candidate["rank"] = len(self.candidate_data["candidates"])
             candidate["address"] = Account.create().address
-            self.add_candidate(candidate["address"])
-
+            asyncio.run(self.add_candidate(candidate["address"]))
 
     @staticmethod
     def _read_and_parse_contract_json(contract_path: pathlib.Path) -> Optional[dict]:
@@ -74,7 +75,8 @@ class Web3Interactor(Module):
         return voter.hex()
 
     async def add_candidate(self, candidate_address: str):
-        self.voting_contract.functions.addCandidate(candidate_address).transact()
+        candidate: HexBytes = self.voting_contract.functions.addCandidate(candidate_address).transact()
+        return candidate.hex()
 
     async def vote(self, voter_address: str, candidate_address):
         if voter_address in self.voter_list:
@@ -84,4 +86,17 @@ class Web3Interactor(Module):
             return True
 
     async def candidate_list(self):
+        await self.update_candidate_vote_count()
+        self.sort_candidates_by_vote_count()
         return self.candidate_data
+
+    async def update_candidate_vote_count(self):
+        for candidate in self.candidate_data["candidates"]:
+            candidate["vote_count"] = await self.balance_of(candidate["address"])
+
+    def sort_candidates_by_vote_count(self):
+        candidates: list = self.candidate_data["candidates"]
+        self.candidate_data["candidates"].sort(reverse=True, key=lambda e: e["vote_count"])
+
+        for rank in range(1, len(candidates)):
+            candidates[rank-1]["rank"] = rank

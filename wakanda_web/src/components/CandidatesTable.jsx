@@ -18,6 +18,7 @@ const CandidatesTable = ({ candidates }) => {
             <TableCell>Candidate name</TableCell>
             <TableCell align="right">Candidate age</TableCell>
             <TableCell align="right">Candidate cult</TableCell>
+            <TableCell align="right">Votes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -33,6 +34,7 @@ const CandidatesTable = ({ candidates }) => {
                   </TableCell>
                   <TableCell align="right">{candidate.age}</TableCell>
                   <TableCell align="right">{candidate.cult}</TableCell>
+                  <TableCell align="right">{candidate.vote_count}</TableCell>
                 </TableRow>
               );
             }
