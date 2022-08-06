@@ -1,8 +1,5 @@
 import React from 'react';
 
-const handleClick = () => {
-  alert('hello kind ser');
-};
 
 const Candidate = ({ name, selected, handleClick }) => {
   return (
