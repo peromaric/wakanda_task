@@ -1,9 +1,9 @@
 from fastapi_utils.inferring_router import InferringRouter
 from starlette.responses import RedirectResponse
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from wakanda_api.web3_interactor import Web3Interactor
-import random
+from fastapi import HTTPException, Response, status
 
 """
 router with its .get and .post routes below.
@@ -50,13 +50,22 @@ async def register_voter(address):
     return response
 
 
-@router.get(
-    "/vote/{voter_address}_{candidate_address}",
-    summary="Returns True if successful"
+class VoteCast(BaseModel):
+    voterAddress: str
+    candidateAddresses: List[str]
+
+
+@router.post(
+    "/vote/",
+    summary="Returns True if successful",
+    status_code=200
 )
-async def vote(voter_address, candidate_address):
-    response = await web3_interactor.vote(voter_address, candidate_address)
-    return response
+async def vote(vote_cast: VoteCast):
+    vote_success = await web3_interactor.vote(vote_cast.voterAddress, vote_cast.candidateAddresses)
+    if vote_success:
+        return vote_success
+    else:
+        raise HTTPException(status_code=404, detail="Couldn't cast vote")
 
 
 @router.get(

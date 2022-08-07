@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# in case the containers are up down them
+docker-compose -f docker-compose.yml down
+
+# up and build containers. build for first run
 docker-compose -f docker-compose.yml up -d --build
 
 #Create a local tmp folder that contains exports

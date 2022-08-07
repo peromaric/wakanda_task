@@ -82,32 +82,39 @@ const Voting = () => {
     }
 
     const selectedCandidates = getSelectedCandidates();
+    // get candidate addresses
+    let selectedCandidatesAddresses = []
+    selectedCandidates.forEach((c) => {
+      selectedCandidatesAddresses.push(c.address)
+    })
     let postData = {
         voterAddress: address,
-        candidates: selectedCandidates
+        candidateAddresses: selectedCandidatesAddresses
     }
-    selectedCandidates.forEach(async (c) => {
-      let response = await fetch(
-        `http://localhost:8888/vote/`,
-        {
-          method: 'POST',
-          mode: 'no-cors',
-          body: JSON.stringify({vote_cast: {voterAddress: address, candidates: selectedCandidates}}),
-          headers: {"Content-Type": "application/json"}
-        }
-      );
-      let data = await response.json();
-      if (data.code == 100) {
-        setnumberOfTokens(data.numberOfTokens);
-        setCandidates(
-          candidates.map((c) => {
-            c.selected = false;
-            return c;
-          })
-        );
-        setPositiveMessage('Vote successful');
+    
+    let response = await fetch(
+      `http://localhost:8888/vote/`,
+      {
+        method: 'POST',
+        body: JSON.stringify(postData),
+        headers: {"Content-Type": "application/json"}
       }
-    });
+    );
+
+    let data = await response.json();
+    console.log(data)
+    if (data) {
+      setnumberOfTokens(data.numberOfTokens);
+      setCandidates(
+        candidates.map((c) => {
+          c.selected = false;
+          return c;
+        })
+      );
+      setPositiveMessage('Vote successful');
+    }
+    else setErrorMessage("Vote failed")
+
   };
 
   useEffect(() => {

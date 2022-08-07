@@ -1,7 +1,7 @@
 import json
 from eth_account import Account
 from wakanda_api.module import Module
-from typing import Optional
+from typing import Optional, List
 from web3 import Web3
 import pathlib
 import requests
@@ -78,12 +78,17 @@ class Web3Interactor(Module):
         candidate: HexBytes = self.voting_contract.functions.addCandidate(candidate_address).transact()
         return candidate.hex()
 
-    async def vote(self, voter_address: str, candidate_address):
+    async def vote(self, voter_address: str, candidate_addresses: List[str]):
         if voter_address in self.voter_list:
             return False
         else:
-            self.voting_contract.functions.vote(voter_address, candidate_address).transact()
-            return True
+            try:
+                for candidate_address in candidate_addresses:
+                    self.voting_contract.functions.vote(voter_address, candidate_address).transact()
+                self.voter_list.append(voter_address)
+                return True
+            except Exception:
+                return False
 
     async def candidate_list(self):
         await self.update_candidate_vote_count()
