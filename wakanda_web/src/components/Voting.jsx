@@ -82,11 +82,18 @@ const Voting = () => {
     }
 
     const selectedCandidates = getSelectedCandidates();
+    let postData = {
+        voterAddress: address,
+        candidates: selectedCandidates
+    }
     selectedCandidates.forEach(async (c) => {
       let response = await fetch(
-        `http://localhost:8888/vote/${address}_${c.address}`,
+        `http://localhost:8888/vote/`,
         {
-          method: 'GET',
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify({vote_cast: {voterAddress: address, candidates: selectedCandidates}}),
+          headers: {"Content-Type": "application/json"}
         }
       );
       let data = await response.json();
