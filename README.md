@@ -37,3 +37,13 @@ After you've registered you can go to the voting page.
 ![image](https://user-images.githubusercontent.com/67732669/183244228-3cb7b7d3-fba1-43a3-bdb2-8adb934071d0.png)
 
 Here you can actually vote for one or multiple candidates, depending on the number of tokens you have. Just select the candidate and press vote, that's it.
+
+## Contract specifics
+
+How do the contracts work? There's two contracts (https://github.com/peromaric/wakanda_task/tree/main/wakanda_blockchain/contracts) --> wakandaERC20.sol and wakandaVotingContract.sol
+
+These contracts get compiled and deployed within the blockchain_cont. 
+
+### ERC20 specifics
+
+function _beforeTokenTransfer - overrides the standard _beforeTokenTransfer function so that only the OWNER may transfer tokens. Why? Because when someone votes, the tokens get sent to the address of the candidate a voter voted for. We don't want anyone to be able to send the tokens and bypass the checks that exist on the server.
